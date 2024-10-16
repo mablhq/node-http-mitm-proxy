@@ -1,6 +1,6 @@
 {
   "name": "@mablhq/http-mitm-proxy",
-  "version": "1.1.0-mabl",
+  "version": "1.1.0",
   "description": "HTTP Man In The Middle (MITM) Proxy",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

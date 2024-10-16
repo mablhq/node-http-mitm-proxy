@@ -18,6 +18,8 @@ export interface IProxyOptions {
   port?: number;
   /**host - The hostname or local address to listen on.*/
   host?: string;
+  /**proxyToProxyHost - The hostname or local address to bind the proxy to proxy socket.*/
+  proxyToProxyHost?: string;
   /** - Path to the certificates cache directory (default: process.cwd() + '/.http-mitm-proxy')*/
   sslCaDir?: string;
   /**  - enable HTTP persistent connection*/

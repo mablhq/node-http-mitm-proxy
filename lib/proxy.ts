@@ -66,7 +66,6 @@ export class Proxy implements IProxy {
   httpAgent!: http.Agent;
   httpHost?: string;
   httpPort!: number;
-  httpProxyToProxyHost?: string;
   httpServer: HTTPServer | undefined;
   httpsAgent!: https.Agent;
   httpsPort?: number;
@@ -121,7 +120,6 @@ export class Proxy implements IProxy {
     this.options = options || {};
     this.httpPort = options.port || options.port === 0 ? options.port : 8080;
     this.httpHost = options.host || "localhost";
-    this.httpProxyToProxyHost = options.proxyToProxyHost || "0.0.0.0";
     this.timeout = options.timeout || 0;
     this.keepAlive = !!options.keepAlive;
     this.httpAgent =
@@ -485,11 +483,15 @@ export class Proxy implements IProxy {
 
     socket.pause();
     function makeConnection(port: number) {
-      // open a TCP connection to the remote host
+      // open a TCP connection to the local server
+      // We connect to the same address that the server is bound to.
+      // This is important if, for example, we use 'localhost' which might resolve to ::1 or 127.0.0.1.
+      // If we bound to ::1 and we try to connect to 127.0.0.1, the connection will fail.
+      const host = (self.httpServer!.address() as AddressInfo).address;
       const conn = net.connect(
         {
           port,
-          host: self.httpProxyToProxyHost,
+          host,
           allowHalfOpen: true,
         },
 
